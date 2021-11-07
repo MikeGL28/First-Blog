@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, abort, request
+from flask import Flask, render_template, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
@@ -7,10 +7,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
-from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm, SendForm
+from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 import os
-import smtplib
 
 MY_EMAIL = "gavrilov2809ml@gmail.com"
 MY_PASSWORD = "2809mihaiL"
@@ -223,6 +222,7 @@ def delete_post(post_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('get_all_posts'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
