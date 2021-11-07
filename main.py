@@ -171,18 +171,7 @@ def about():
 
 @app.route("/contact")
 def contact():
-    form = SendForm()
-    if form.validate_on_submit():
-        with smtplib.SMTP("smtp.gmail.com") as connection:
-            connection.starttls()
-            connection.login(user=MY_EMAIL, password=MY_PASSWORD)
-            connection.sendmail(
-                from_addr=form.email,
-                to_addrs=MY_EMAIL,
-                msg=form.message
-            )
-            return redirect(url_for('contact'))
-    return render_template("contact.html", form=form, current_user=current_user)
+    return render_template("contact.html", current_user=current_user)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
