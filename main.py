@@ -11,8 +11,6 @@ from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 import os
 
-MY_EMAIL = "gavrilov2809ml@gmail.com"
-MY_PASSWORD = "2809mihaiL"
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
@@ -168,7 +166,7 @@ def about():
     return render_template("about.html", current_user=current_user)
 
 
-@app.route("/contact")
+@app.route("/contact", methods=['GET', 'POST'])
 def contact():
     return render_template("contact.html", current_user=current_user)
 
