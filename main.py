@@ -181,8 +181,8 @@ def contact():
                 to_addrs=MY_EMAIL,
                 msg=form.message
             )
-
-        return render_template("contact.html", form=form, current_user=current_user)
+            return redirect(url_for('contact'))
+    return render_template("contact.html", form=form, current_user=current_user)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
