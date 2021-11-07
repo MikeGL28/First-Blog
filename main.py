@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, abort
+from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
@@ -7,10 +7,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
-from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
+from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm, SendForm
 from flask_gravatar import Gravatar
 import os
+import smtplib
 
+MY_EMAIL = "gavrilov2809ml@gmail.com"
+MY_PASSWORD = "2809mihaiL"
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
@@ -168,7 +171,18 @@ def about():
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html", current_user=current_user)
+    form = SendForm()
+    if form.validate_on_submit():
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=MY_EMAIL, password=MY_PASSWORD)
+            connection.sendmail(
+                from_addr=form.email,
+                to_addrs=MY_EMAIL,
+                msg=form.message
+            )
+
+        return render_template("contact.html", form=form, current_user=current_user)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
@@ -220,7 +234,6 @@ def delete_post(post_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('get_all_posts'))
-
 
 if __name__ == "__main__":
     app.run(debug=True)
