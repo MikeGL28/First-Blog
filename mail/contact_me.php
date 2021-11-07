@@ -1,27 +1,36 @@
 <?php
-// Check for empty fields
-if(empty($_POST['name'])      ||
-   empty($_POST['email'])     ||
-   empty($_POST['phone'])     ||
-   empty($_POST['message'])   ||
-   !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL))
-{
-   echo "No arguments Provided!";
-   return false;
-}
+/* Здесь проверяется существование переменных */
+if (isset($_POST['name'])) {$phone = $_POST['name'];}
+if (isset($_POST['phone'])) {$name = $_POST['phone'];}
+if (isset($_POST['email'])) {$phone = $_POST['email']}
 
-$name = strip_tags(htmlspecialchars($_POST['name']));
-$email_address = strip_tags(htmlspecialchars($_POST['email']));
-$phone = strip_tags(htmlspecialchars($_POST['phone']));
-$message = strip_tags(htmlspecialchars($_POST['message']));
+/* Сюда впишите свою эл. почту */
+$myaddres  = "gavrilov2809@gmail.com"; // кому отправляем
 
-// Create the email and send the message
-$to = 'gavrilov2809ml@gmail.com'; // Add your email address inbetween the '' replacing yourname@yourdomain.com - This is where the form will send a message to.
-$email_subject = "Contacto desde la web de parte de:  $name";
-$email_body = "Hola Verónica, recibiste un mensaje desde la planilla de contacto.\n\n"."Estos son los detalles:\n\nNombre: $name\n\nEmpresa: $company\n\nEmail: $email_address\n\nTeléfono: $phone\n\nPaís: $country\n\nConsulta:\n$message";
-$headers = "From: noreply@trabajosaludable.com.ar\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
-$headers .= "Reply-To: $email_address";
+/* А здесь прописывается текст сообщения, \n - перенос строки */
+$mes = "Тема: Заказ обратного звонка!\nТелефон: $phone\nИмя: $name";
 
-$result = mail($to,$email_subject,$email_body,$headers);
-die($result);
+/* А эта функция как раз занимается отправкой письма на указанный вами email */
+$sub='Заказ'; //сабж
+$email='Заказ обратного звонка'; // от кого
+$send = mail ($myaddres,$sub,$mes,"Content-type:text/plain; charset = utf-8\r\nFrom:$email");
+
+ini_set('short_open_tag', 'On');
+header('Refresh: 3; URL=index.html');
 ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="refresh" content="3; url=index.html">
+<title>Спасибо! Мы свяжемся с вами!</title>
+<meta name="generator">
+<script type="text/javascript">
+setTimeout('location.replace("/index.html")', 3000);
+/*Изменить текущий адрес страницы через 3 секунды (3000 миллисекунд)*/
+</script>
+</head>
+<body>
+<h1>Спасибо! Мы свяжемся с вами!</h1>
+</body>
+</html>
